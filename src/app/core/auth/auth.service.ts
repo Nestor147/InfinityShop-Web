@@ -9,7 +9,7 @@ import { AuthBroadcast } from './auth.broadcast';
 import { environment } from '../../../environments/environment.development';
 
 type TokenPair = { accessToken: string; refreshToken: string };
-type LoginRequest = { username: string; password: string };
+type LoginRequest = { username: string; password: string; applicationId:number };
 type RefreshRequest = { refreshToken: string };
 
 @Injectable({ providedIn: 'root' })
@@ -19,12 +19,12 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly broadcast = inject(AuthBroadcast);
 
-  private readonly api = (environment.apiUrl ?? 'https://masterautenticacion.backendatacado.com/api/Auth/sessions').replace(/\/+$/, '');
+  private readonly api = ('https://masterautenticacion.backendatacado.com/api').replace(/\/+$/, '');
   private readonly ctx = new HttpContext().set(SKIP_AUTH, true);
 
   login(body: LoginRequest): Observable<TokenPair> {
     return this.http
-      .post<TokenPair>(`${this.api}/Auth/sessions`, body, { context: this.ctx })
+      .post<TokenPair>(`${this.api}/Auth/login`, body, { context: this.ctx })
       .pipe(
         tap(p => {
           this.tokens.setTokens(p.accessToken, p.refreshToken);

@@ -1,7 +1,7 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-const ACCESS_KEY  = 'ath.at';
-const REFRESH_KEY = 'ath.rt';
+const ACCESS_KEY  = 'atish.at';
+const REFRESH_KEY = 'atish.rt';
 
 const S = sessionStorage;
 

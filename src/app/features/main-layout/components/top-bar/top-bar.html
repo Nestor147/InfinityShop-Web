@@ -1,0 +1,141 @@
+<header class="sticky top-0 z-40 border-b border-white/10 bg-sa-primary/60 backdrop-blur supports-[backdrop-filter]:bg-sa-primary/50">
+  <div class="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6">
+    <div class="h-14 sm:h-16 flex items-center gap-3">
+
+      <!-- Botón: Sidebar -->
+      <button
+        type="button"
+        (click)="menuToggle.emit()"
+        class="p-2 rounded-xl ring-1 ring-white/10 hover:ring-sa-accent/70 hover:bg-white/5 transition
+               focus:outline-none focus-visible:ring-2 focus-visible:ring-sa-accent"
+        aria-label="Abrir menú lateral">
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M4 7h16M4 12h12M4 17h16"/>
+        </svg>
+      </button>
+
+      <!-- Marca / Título -->
+      <div class="hidden sm:flex items-center gap-2 select-none">
+        <!-- (Opcional) logo -->
+        <!-- <svg-icon class="w-6 h-6 text-sa-accent" src="assets/icons/icon-app.svg"></svg-icon> -->
+        <span class="text-sm font-medium tracking-wide text-sa-text/85">{{ brand }}</span>
+        <span *ngIf="envLabel"
+              class="ml-2 text-[10px] px-2 py-0.5 rounded-lg border border-white/10 bg-white/5 text-sa-text/70">
+          {{ envLabel }}
+        </span>
+      </div>
+
+      <div class="ml-auto flex items-center gap-1 sm:gap-2">
+
+        <!-- Launcher (íconos SVG) -->
+        <div class="relative" data-menu-root>
+          <button
+            type="button"
+            (click)="onToggleLauncher($event)"
+            class="p-2 rounded-xl ring-1 ring-white/10 hover:ring-sa-accent/70 hover:bg-white/5 transition
+                   focus:outline-none focus-visible:ring-2 focus-visible:ring-sa-accent"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="launcherOpen()">
+            <!-- 3x3 dots -->
+            <svg class="size-5" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="5" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="19" cy="5" r="1.6"/>
+              <circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>
+              <circle cx="5" cy="19" r="1.6"/><circle cx="12" cy="19" r="1.6"/><circle cx="19" cy="19" r="1.6"/>
+            </svg>
+          </button>
+
+          <div
+            *ngIf="launcherOpen()"
+            class="absolute right-0 mt-2 w-72 rounded-2xl border border-white/10 bg-sa-black/80 backdrop-blur shadow-xl p-2"
+            role="menu">
+            <div class="grid grid-cols-3 gap-2">
+              <button (click)="action.emit('users'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+                <span class="text-[11px]">Usuarios</span>
+              </button>
+
+              <button (click)="action.emit('roles'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span class="text-[11px]">Roles</span>
+              </button>
+
+              <button (click)="action.emit('permissions'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="14" rx="2"/>
+                  <path d="M7 8h10M7 12h6"/>
+                </svg>
+                <span class="text-[11px]">Permisos</span>
+              </button>
+
+              <button (click)="action.emit('audit'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 4h18v4H3z"/>
+                  <path d="M7 12h10M7 16h10"/>
+                </svg>
+                <span class="text-[11px]">Auditoría</span>
+              </button>
+
+              <button (click)="action.emit('monitor'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="3" width="20" height="14" rx="2"/>
+                  <path d="M8 21h8M12 17v4"/>
+                  <path d="M4 10l3 3 4-6 3 4 3-2"/>
+                </svg>
+                <span class="text-[11px]">Monitor</span>
+              </button>
+
+              <button (click)="action.emit('settings'); launcherOpen.set(false)"
+                      class="cursor-pointer group flex flex-col items-center gap-1 rounded-xl p-3 bg-white/5 hover:bg-white/10 transition text-center">
+                <svg class="size-6 text-sa-text/90 group-hover:text-sa-accent transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4"/>
+                </svg>
+                <span class="text-[11px]">Ajustes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Usuario -->
+        <div class="relative" data-menu-root>
+          <button
+            type="button"
+            (click)="onToggleUser($event)"
+            class="flex items-center gap-2 pl-2 pr-2.5 h-10 rounded-xl ring-1 ring-white/10 hover:ring-sa-accent/70 hover:bg-white/5 transition
+                   focus:outline-none focus-visible:ring-2 focus-visible:ring-sa-accent"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="userOpen()">
+            <span class="hidden sm:block text-xs text-sa-text/80">{{ userName }}</span>
+            <span class="inline-grid place-items-center size-8 rounded-lg bg-white/10 text-sm font-semibold">{{ avatarText }}</span>
+          </button>
+
+          <div *ngIf="userOpen()"
+               class="absolute right-0 mt-2 w-56 rounded-2xl border border-white/10 bg-sa-black/80 backdrop-blur shadow-xl p-2">
+            <button (click)="userAction.emit('profile'); userOpen.set(false)"
+                    class="cursor-pointer w-full text-left px-3 py-2 rounded-xl hover:bg-white/10 text-sm">Mi cuenta</button>
+            <div class="my-1 h-px bg-white/10"></div>
+            <button (click)="userAction.emit('logout'); userOpen.set(false)"
+                    class="cursor-pointer w-full text-left px-3 py-2 rounded-xl hover:bg-white/10 text-sm text-red-300">
+              Cerrar sesión
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>

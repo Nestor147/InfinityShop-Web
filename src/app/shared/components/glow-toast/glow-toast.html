@@ -1,0 +1,23 @@
+<div class="card" (mouseenter)="pause()" (mouseleave)="resume()">
+  <div class="row">
+    <div class="icon">
+      <svg-icon [src]="icon" class="h-5 w-5" aria-hidden="true"></svg-icon>
+    </div>
+
+    <div class="content">
+      <h4 class="title">{{ title }}</h4>
+      <p class="msg">{{ message }}</p>
+
+      <button *ngIf="actionText && action"
+              type="button"
+              class="cta"
+              (click)="clickAction($event)">
+        {{ actionText }}
+      </button>
+    </div>
+
+    <button type="button" class="close" (click)="close()" aria-label="Cerrar">
+      <svg-icon src="/assets/icons/icon-close.svg" class="h-4 w-4"></svg-icon>
+    </button>
+  </div>
+</div>

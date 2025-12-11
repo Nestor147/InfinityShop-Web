@@ -1,0 +1,19 @@
+<!-- dialog-modal.component.html -->
+<div class="dialog-wrapper">
+  <div class="dialog-overlay overlay-enter" (click)="onOverlayClick()"></div>
+
+  <section
+    #modal
+    class="dialog anim-enter-scale"
+    [class.dialog--draggable]="isDragEnabled()"
+    role="dialog"
+    aria-modal="true"
+    tabindex="-1"
+    (click)="$event.stopPropagation()"
+    (pointerdown)="onDragStart($event)"
+  >
+    <div class="dialog__body">
+      <ng-content></ng-content>
+    </div>
+  </section>
+</div>

@@ -6,12 +6,10 @@ import { MenuItemInterface } from '../../../../shared/models/main-menu-bus/menu-
 
 @Component({
   selector: 'main-btn-system',
-  standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, SvgIconComponent],
-  templateUrl: './btn-system.component.html',
-  styleUrl: './btn-system.component.scss',
+  templateUrl: './btn-system.html'
 })
-export class BtnSystemComponent {
+export class BtnSystem {
   @Input() name!: string;
   @Input() icon!: string;
   @Input() route?: string | any[];

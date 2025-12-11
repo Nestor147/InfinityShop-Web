@@ -1,0 +1,49 @@
+/* dialog-modal.component.scss */
+@use './dialog-animations.scss';
+
+:host { position: fixed; inset: 0; z-index: 1000; display: block; }
+
+.dialog-wrapper { position: fixed; inset: 0; }
+
+.dialog-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500;
+  &.overlay-enter { animation: overlay-enter .18s ease-out both; }
+  &.overlay-leave { animation: overlay-leave .18s ease-in both; }
+}
+
+.dialog {
+  position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  will-change: left, top, transform;
+  z-index: 1001;
+
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  border-radius: 14px;
+  color: #111;
+  outline: none;
+
+  width: var(--dlg-w, auto);
+  max-width: var(--dlg-mw, min(640px, 92vw));
+  height: var(--dlg-h, auto);
+  max-height: var(--dlg-mh, 90vh);
+
+  display: block;
+  overflow: hidden;
+
+  &.anim-enter-scale { animation: enter-scaling .22s ease-out both; }
+  &.anim-leave-scale { animation: leave-scaling .18s ease-in both; }
+  &.anim-enter-slide { animation: enter-slide-down .22s ease-out both; }
+  &.anim-leave-slide { animation: leave-slide-up .18s ease-in both; }
+
+  /* Sólo mostrar cursor de movimiento si es draggable */
+  &.dialog--draggable { cursor: auto; }
+
+  /* Pero al interactuar con controles, mantener cursor normal */
+  :is(button, a, input, textarea, select, [role="button"], [contenteditable], [tabindex], label) {
+    cursor: auto;
+  }
+}
+
+.dialog--dragging { transition: none !important; }
+
+.dialog__body { padding: 0; }

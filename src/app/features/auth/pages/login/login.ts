@@ -8,11 +8,10 @@ import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './login.component.html'
+  templateUrl: './login.html'
 })
-export default class LoginComponent {
+export default class Login {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly auth = inject(AuthService);
@@ -34,11 +33,11 @@ export default class LoginComponent {
     const { username, password } = this.form.getRawValue();
     this.loading = true;
     this.errorMsg = '';
-    this.auth.login({ username, password })
+    this.auth.login({ username, password, applicationId:10 })
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/');
         },
         error: (err) => {
           const backendMessage = err?.error?.message ?? '';
