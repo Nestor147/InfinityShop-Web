@@ -1,0 +1,71 @@
+.glow-toast { --accent:#64748b; --bg-soft:#f1f5f9; --text-strong:#0f172a; }
+
+.toast-container{
+  position: relative;
+  min-width: 320px; max-width: 420px;
+  padding: 14px 14px 14px 16px;
+  border-radius: 12px;
+  background: #fff; color: var(--text-strong);
+  box-shadow: 0 10px 30px rgba(2,6,23,.12);
+  border: 1px solid rgba(2,6,23,.06);
+  animation: slide-in .24s ease-out both;
+
+  overflow: hidden;
+}
+
+.toast-container::after{
+  content:"";
+  position:absolute;
+  inset: 0 0 auto 0;
+  height:3px;
+  background: var(--accent);
+  transform-origin: left;
+  animation: bar var(--duration,3000ms) linear forwards;
+
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+.toast-container.paused::after{ animation-play-state: paused; }
+
+.card{ position:relative; }
+.row{ display:flex; align-items:center; gap:.75rem; }
+
+.icon{
+  display:grid; place-items:center;
+  width:36px; height:36px; border-radius:10px;
+  background:var(--bg-soft);
+  border:2px solid var(--accent);
+  color:var(--accent); /* currentColor para el svg */
+}
+
+.content{ flex:1 1 auto; min-width:0; }
+.title{ margin:0; font-weight:700; font-size:.95rem; color:var(--text-strong); }
+.msg{ margin:.2rem 0 0; font-size:.88rem; color:#334155; }
+
+.cta{
+  margin-top:.5rem; padding:.38rem .7rem;
+  border-radius:8px; font-weight:700; font-size:.78rem;
+  background:#f8fafc; border:1px solid #e2e8f0; color:var(--text-strong);
+  cursor:pointer;
+}
+.cta:hover{ filter:brightness(.98); }
+
+.close{
+  margin-left:.25rem; display:grid; place-items:center;
+  width:28px; height:28px; border-radius:8px;
+  border:0; background:transparent; color:#475569;
+  cursor:pointer;
+}
+.close:hover{ background:#f1f5f9; color:#0f172a; }
+
+.toast-container.success { --accent:#10b981; --bg-soft:#ecfdf5; }
+.toast-container.error   { --accent:#ef4444; --bg-soft:#fef2f2; }
+.toast-container.warning { --accent:#f59e0b; --bg-soft:#fffbeb; }
+.toast-container.info    { --accent:#3b82f6; --bg-soft:#eff6ff; }
+.toast-container.update  { --accent:#8b5cf6; --bg-soft:#f5f3ff; }
+.toast-container.delete  { --accent:#ef4444; --bg-soft:#fef2f2; }
+
+@keyframes slide-in{ from{ transform:translateY(8px); opacity:0 } to{ transform:none; opacity:1 } }
+@keyframes bar{ from{ transform:scaleX(1) } to{ transform:scaleX(0) } }
+.fade-out{ animation: slide-out .2s ease-in both; }
+@keyframes slide-out{ to{ transform:translateY(6px); opacity:0 } }

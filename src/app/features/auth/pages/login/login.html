@@ -1,0 +1,332 @@
+<div
+  class="min-h-svh flex items-center justify-center px-4 py-6
+         bg-gradient-to-b from-sa-bg via-sa-bg-soft to-sa-primary/40"
+>
+  <div
+    class="w-full max-w-6xl grid gap-6
+           lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] items-stretch"
+  >
+    <section
+      class="flex items-center justify-center"
+    >
+      <div
+        class="w-full max-w-md rounded-3xl bg-sa-surface shadow-sa-card
+               border border-sa-border/80 px-5 sm:px-7 pt-6 sm:pt-7 pb-6 sm:pb-7"
+      >
+        <div class="flex items-center justify-between gap-3 mb-5 sm:mb-6">
+          <div class="flex items-center gap-3">
+            <div
+              class="h-11 w-11 rounded-2xl bg-gradient-to-br from-sa-primary to-sa-accent
+                     grid place-items-center text-sa-text text-xs font-extrabold tracking-tight"
+            >
+              INV
+            </div>
+            <div>
+              <p class="text-sm sm:text-base font-semibold text-sa-ink">
+                Panel de Inventarios
+              </p>
+              <p class="text-[10px] sm:text-xs text-sa-ink-soft">
+                Control de stock y movimientos
+              </p>
+            </div>
+          </div>
+
+          <div class="hidden sm:flex flex-col items-end gap-1">
+            <span
+              class="px-2 py-0.5 rounded-full text-[10px]
+                     bg-sa-primary-soft text-sa-primary border border-sa-primary/30"
+            >
+              Multi-sucursal
+            </span>
+            <span
+              class="px-2 py-0.5 rounded-full text-[10px]
+                     bg-sa-accent-soft text-sa-accent border border-sa-accent/30"
+            >
+              Stock en tiempo real
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h1 class="text-xl sm:text-2xl font-bold text-sa-ink mb-1">
+            Inicia sesión
+          </h1>
+          <p class="text-xs sm:text-sm text-sa-ink-soft">
+            Accede a las existencias, movimientos y reportes de tu inventario.
+          </p>
+        </div>
+
+        <form
+          [formGroup]="form"
+          (ngSubmit)="submit()"
+          class="mt-6 space-y-4 sm:space-y-5"
+        >
+          <div class="space-y-1">
+            <label class="block text-xs sm:text-sm font-medium text-sa-ink">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              formControlName="username"
+              autocomplete="username"
+              class="w-full rounded-2xl border border-sa-border
+                     bg-white px-3.5 py-2.5 outline-none text-sm
+                     focus:border-sa-primary focus:ring-2 focus:ring-sa-primary-soft
+                     text-sa-ink placeholder-sa-gray-500 caret-sa-primary"
+              placeholder="tucorreo@empresa.com"
+            />
+            <span
+              *ngIf="form.get('username')?.touched && form.get('username')?.invalid"
+              class="text-[11px] text-sa-error"
+            >
+              Ingresa un correo válido
+            </span>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs sm:text-sm font-medium text-sa-ink">
+                Contraseña
+              </label>
+              <a
+                routerLink="/auth/forgot"
+                class="text-[11px] sm:text-xs text-sa-primary hover:underline"
+              >
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+            <div class="relative">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                formControlName="password"
+                autocomplete="current-password"
+                class="w-full rounded-2xl border border-sa-border
+                       bg-white px-3.5 py-2.5 pr-11 outline-none text-sm
+                       focus:border-sa-primary focus:ring-2 focus:ring-sa-primary-soft
+                       text-sa-ink placeholder-sa-gray-500 caret-sa-primary"
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                (click)="togglePassword()"
+                class="absolute right-2 top-1/2 -translate-y-1/2
+                       text-sa-gray-500 hover:text-sa-primary p-2"
+                aria-label="Mostrar u ocultar contraseña"
+              >
+                <span class="sr-only">Mostrar/Ocultar</span>
+                <svg
+                  *ngIf="!showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                <svg
+                  *ngIf="showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 3l18 18M9.88 9.88A3 3 0 0112 9c.828 0 1.578.336 2.121.879M15 15a3 3 0 01-4.243-4.243M10.477 4.193A9.956 9.956 0 0112 4c4.477 0 8.268 2.943 9.542 7a9.958 9.958 0 01-4.132 5.411M6.228 6.228A9.958 9.958 0 002.458 12c.433 1.381 1.152 2.63 2.085 3.682"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <p *ngIf="errorMsg" class="text-sm text-sa-error">
+            {{ errorMsg }}
+          </p>
+
+          <button
+            type="submit"
+            [disabled]="loading"
+            class="w-full rounded-2xl mt-1
+                   bg-gradient-to-r from-sa-primary to-sa-accent
+                   text-sa-text py-2.5 sm:py-3 text-sm sm:text-base font-semibold
+                   hover:brightness-110 transition
+                   disabled:opacity-60 disabled:cursor-not-allowed
+                   inline-flex items-center justify-center gap-2"
+          >
+            <svg
+              *ngIf="loading"
+              class="h-4 w-4 animate-spin"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-opacity=".25"
+                stroke-width="4"
+              ></circle>
+              <path
+                d="M22 12a10 10 0 0 1-10 10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></path>
+            </svg>
+            {{ loading ? 'Ingresando…' : 'Entrar al módulo de inventarios' }}
+          </button>
+        </form>
+
+        <div
+          class="mt-5 pt-4 border-t border-sa-border text-[11px] text-sa-ink-soft text-center sm:text-left"
+        >
+          © {{ year }} Sistema de Inventarios — Productos, stock y movimientos centralizados.
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="hidden lg:flex flex-col justify-between rounded-3xl
+             bg-gradient-to-br from-sa-bg-soft via-sa-bg to-sa-primary
+             text-sa-text p-7 xl:p-8 relative overflow-hidden"
+    >
+      <div class="pointer-events-none absolute inset-0">
+        <div class="absolute -top-16 -right-10 w-52 h-52 rounded-full bg-sa-primary-soft/20 blur-3xl"></div>
+        <div class="absolute -bottom-20 -left-16 w-64 h-64 rounded-full bg-sa-accent-soft/20 blur-3xl"></div>
+      </div>
+
+      <div class="relative z-10 space-y-6">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs uppercase tracking-[0.18em] text-sa-gray-300">
+              Resumen de inventario
+            </p>
+            <h2 class="mt-1 text-2xl font-semibold">
+              Visión rápida de tu almacén
+            </h2>
+          </div>
+          <span
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full
+                   bg-sa-surface-soft/80 text-[11px] text-sa-accent font-medium
+                   border border-sa-accent/40"
+          >
+            <span class="h-1.5 w-1.5 rounded-full bg-sa-accent animate-pulse"></span>
+            Sincronizado hoy
+          </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 text-xs">
+          <div
+            class="rounded-2xl bg-sa-bg-soft/80 border border-white/10 p-3 flex flex-col justify-between"
+          >
+            <span class="text-[11px] text-sa-gray-300">Productos activos</span>
+            <span class="mt-2 text-lg font-semibold">1,248</span>
+            <span class="mt-1 text-[11px] text-sa-gray-300">
+              +32 esta semana
+            </span>
+          </div>
+
+          <div
+            class="rounded-2xl bg-sa-bg-soft/80 border border-white/10 p-3 flex flex-col justify-between"
+          >
+            <span class="text-[11px] text-sa-gray-300">Stock bajo</span>
+            <span class="mt-2 text-lg font-semibold text-sa-warning">
+              18
+            </span>
+            <span class="mt-1 text-[11px] text-sa-gray-300">
+              Reponer urgente
+            </span>
+          </div>
+
+          <div
+            class="rounded-2xl bg-sa-bg-soft/80 border border-white/10 p-3 flex flex-col justify-between"
+          >
+            <span class="text-[11px] text-sa-gray-300">Movimientos hoy</span>
+            <span class="mt-2 text-lg font-semibold">63</span>
+            <span class="mt-1 text-[11px] text-sa-gray-300">
+              Entradas / salidas
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="mt-2 rounded-2xl bg-sa-bg-soft/70 border border-white/10 p-3.5 space-y-3 text-xs"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] text-sa-gray-300">
+              Próximos productos a revisar
+            </span>
+            <span class="text-[11px] text-sa-primary-soft">
+              Ver detalles luego del acceso
+            </span>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span
+                  class="h-7 w-7 rounded-xl bg-sa-bg-soft grid place-items-center text-[10px]"
+                >
+                  VR-019
+                </span>
+                <div>
+                  <p class="text-[11px] font-medium">Bebidas energéticas</p>
+                  <p class="text-[10px] text-sa-gray-300">
+                    Sucursal central · Stock: 9
+                  </p>
+                </div>
+              </div>
+              <span
+                class="px-2 py-0.5 rounded-full text-[10px] bg-sa-warning-soft/80 text-sa-warning"
+              >
+                Bajo stock
+              </span>
+            </div>
+
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span
+                  class="h-7 w-7 rounded-xl bg-sa-bg-soft grid place-items-center text-[10px]"
+                >
+                  VR-102
+                </span>
+                <div>
+                  <p class="text-[11px] font-medium">Lotes próximos a vencer</p>
+                  <p class="text-[10px] text-sa-gray-300">
+                    Farmacia Sur · 15 días
+                  </p>
+                </div>
+              </div>
+              <span
+                class="px-2 py-0.5 rounded-full text-[10px] bg-sa-primary-soft/80 text-sa-primary"
+              >
+                Vencimientos
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative z-10 mt-5 text-[11px] text-sa-gray-300">
+        Gestiona tus almacenes, sucursales y productos desde un solo panel
+        después de iniciar sesión.
+      </div>
+    </section>
+  </div>
+</div>
