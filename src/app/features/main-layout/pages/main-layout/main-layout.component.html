@@ -1,0 +1,332 @@
+@if (!isLoading()) {
+<div class="h-screen w-screen flex flex-col bg-slate-50 text-slate-900 dark:bg-sa-black dark:text-sa-text">
+  <app-top-bar
+    [brand]="t().topBrand"
+    [envLabel]="'DEV'"
+    [userName]="'Superadmin'"
+    [avatarText]="'SA'"
+    (menuToggle)="toggleMenu()"
+    (userAction)="onUserAction($event)">
+  </app-top-bar>
+
+  <div class="flex flex-1 min-h-0">
+    <aside
+      class="relative overflow-hidden
+             bg-slate-100 text-slate-800 border-r border-slate-200
+             dark:bg-sa-primary dark:text-sa-text/90 dark:border-white/10
+             transition-all duration-300 ease-in-out will-change-[width,opacity] z-30"
+      [ngClass]="menuOpen ? 'w-56 md:w-64 opacity-100 pointer-events-auto' : 'w-0 opacity-0 pointer-events-none'">
+
+      <div class="h-full overflow-y-auto py-3 scroll-silent">
+        @let sections = menuBusService.sections();
+
+        @if (sections.length > 0 && currentUrl().startsWith('/atacado')) {
+          <!-- MODO BUS (Atacado-Roles) -->
+          <nav class="px-2 py-2 flex flex-col gap-2">
+            @for (section of sections; track $index) {
+              @if (section.title) {
+                <div
+                  class="px-2 pt-2 pb-1 text-[10px] uppercase tracking-wide text-slate-500 dark:text-white/40 select-none">
+                  {{ menuTitle(section.title) }}
+                </div>
+              }
+              @for (item of section.menuItems; track $index) {
+                <main-btn-system
+                  [name]="menuTitle(item.title)"
+                  [icon]="item.icon ?? ''"
+                  [route]="['/atacado', item.url || '']"
+                  variant="row"
+                  [showArrow]="!!item.children?.length"
+                  [children]="item.children ?? null"
+                  (openSubmenu)="onOpenSubmenu($event, '/atacado')"
+                  arrowIcon="assets/icons/icon-arrow-right-short.svg">
+                </main-btn-system>
+              }
+            }
+          </nav>
+        } @else {
+          <!-- MODO FEATURES (Dashboard principal) -->
+          <nav class="px-2 py-2 flex flex-col gap-2">
+            @for (f of features; track $index) {
+              <main-btn-system
+                [name]="featureName(f)"
+                [icon]="f.icon"
+                [route]="f.hasChildren ? undefined : f.route"
+                variant="row"
+                [showArrow]="f.hasChildren === true"
+                [children]="f.children ?? null"
+                (openSubmenu)="onOpenSubmenu({ title: f.sectionTitle ?? featureName(f), items: f.children ?? [] }, baseForFeature(f))"
+                arrowIcon="assets/icons/icon-arrow-right-short.svg">
+              </main-btn-system>
+            }
+          </nav>
+        }
+      </div>
+
+      <!-- DRAWER SUBMENÚ -->
+      <section
+        class="absolute inset-0 z-40
+               bg-slate-50 text-slate-800 border-l border-slate-200 shadow-xl
+               dark:bg-sa-submenu dark:text-sa-text dark:border-white/10
+               transition-transform duration-300 ease-in-out translate-x-full overflow-y-auto scroll-silent"
+        [class.translate-x-0]="submenuOpen()"
+        [class.translate-x-full]="!submenuOpen()">
+
+        <div
+          class="sticky top-0 z-10 flex items-center gap-2 h-12 px-3 border-b border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-sa-submenu">
+          <button
+            type="button"
+            class="p-2 rounded-lg ring-1 ring-slate-200 hover:bg-slate-100
+                   dark:ring-white/10 dark:hover:bg-white/5"
+            (click)="closeSubmenu()"
+            [attr.aria-label]="t().submenuBackLabel">
+            <svg-icon
+              [src]="'assets/icons/icon-arrow-left.svg'"
+              [svgClass]="'w-4 h-4 text-slate-700 dark:text-white/80'">
+            </svg-icon>
+          </button>
+          <span
+            class="text-[11px] sm:text-xs font-semibold uppercase tracking-wide text-slate-700 dark:text-white/80 cursor-pointer"
+            (click)="closeSubmenu()">
+            {{ t().submenuMainLabel }}
+          </span>
+        </div>
+
+        <div class="px-3 pt-3 pb-1">
+          <h2 class="text-base sm:text-lg font-medium text-slate-800 dark:text-white/90 truncate">
+            {{ menuTitle(submenuTitle()) }}
+          </h2>
+        </div>
+
+        <div class="p-2 flex flex-col gap-2">
+          @for (it of submenuItems; track it.title) {
+
+            @if (it.children?.length && it.mode === 'accordion') {
+              <div class="rounded-xl ring-1 ring-slate-200 bg-slate-50 dark:bg-transparent dark:ring-white/10">
+                <button
+                  type="button"
+                  class="w-full flex items-center gap-3 h-11 px-3 rounded-xl text-sm
+                         text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                         dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                         transition cursor-pointer ring-1 ring-transparent"
+                  [ngClass]="{
+                    'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                    isGroupActive(it) || isExpanded(it)
+                  }"
+                  (click)="toggleAccordion(it)">
+                  <svg-icon
+                    *ngIf="it.icon"
+                    class="size-5 text-slate-500 dark:text-white/70"
+                    [src]="it.icon">
+                  </svg-icon>
+                  <span class="truncate">{{ menuTitle(it.title) }}</span>
+                  <svg
+                    class="ml-auto size-4 text-slate-500 dark:text-white/70 transition-transform"
+                    [ngClass]="{ 'rotate-90': isExpanded(it) }"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+                <div
+                  class="px-2"
+                  [ngClass]="isExpanded(it) ? 'opacity-100' : 'opacity-0'"
+                  [style.transition]="'opacity 200ms ease'">
+                  <div
+                    class="grid transition-all duration-300 ease-out"
+                    [ngClass]="isExpanded(it) ? 'grid-rows-[1fr] mt-1' : 'grid-rows-[0fr] mt-0'">
+                    <div class="overflow-hidden">
+                      <div class="flex flex-col gap-1 pb-2">
+                        @for (ch of it.children; track ch.title) {
+
+                          @if (ch.children?.length) {
+                            <div class="rounded-lg ring-1 ring-transparent">
+                              <button
+                                type="button"
+                                class="flex w-full items-center gap-3 h-10 px-3 rounded-lg text-[13px]
+                                       text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                                       dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                                       transition ring-1 ring-transparent"
+                                [ngClass]="{
+                                  'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                                  isLv3Expanded(it, ch)
+                                }"
+                                (click)="toggleLv3Inline(it, ch)">
+                                <span class="truncate">{{ menuTitle(ch.title) }}</span>
+                                <svg
+                                  class="ml-auto size-4 text-slate-500 dark:text-white/70 transition-transform"
+                                  [ngClass]="{ 'rotate-90': isLv3Expanded(it, ch) }"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  stroke-width="2">
+                                  <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                              </button>
+
+                              <div
+                                class="px-2"
+                                [ngClass]="isLv3Expanded(it, ch) ? 'opacity-100' : 'opacity-0'"
+                                [style.transition]="'opacity 200ms ease'">
+                                <div
+                                  class="grid transition-all duration-300 ease-out"
+                                  [ngClass]="isLv3Expanded(it, ch) ? 'grid-rows-[1fr] mt-1' : 'grid-rows-[0fr] mt-0'">
+                                  <div class="overflow-hidden">
+                                    <div class="lined-list pl-4" style="--leaf-h:2.25rem;--gap:.25rem">
+                                      @for (gch of ch.children; track gch.title) {
+                                        <a
+                                          [routerLink]="grandChildLinkInline(it, ch, gch)"
+                                          routerLinkActive="active"
+                                          #rlaG="routerLinkActive"
+                                          [routerLinkActiveOptions]="{ exact: true }"
+                                          class="lined-item flex items-center gap-3 h-9 px-3 rounded-md text-[13px]
+                                                 text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                                                 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                                                 transition ring-1 ring-transparent"
+                                          [ngClass]="{
+                                            'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                                            rlaG.isActive
+                                          }">
+                                          <span class="truncate">{{ menuTitle(gch.title) }}</span>
+                                        </a>
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          } @else {
+                            <a
+                              [routerLink]="childLink(ch)"
+                              routerLinkActive="active"
+                              #rlaCH="routerLinkActive"
+                              [routerLinkActiveOptions]="{ exact: true }"
+                              class="flex items-center gap-3 h-10 px-3 rounded-lg text-[13px]
+                                     text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                                     dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                                     transition ring-1 ring-transparent"
+                              [ngClass]="{
+                                'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                                rlaCH.isActive
+                              }">
+                              <span class="truncate">{{ menuTitle(ch.title) }}</span>
+                            </a>
+                          }
+
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            } @else if (it.children?.length && it.mode === 'drawer') {
+              <div class="rounded-xl ring-1 ring-slate-200 bg-slate-50 dark:bg-transparent dark:ring-white/10">
+                <button
+                  type="button"
+                  class="w-full flex items-center gap-3 h-11 px-3 rounded-xl text-sm
+                         text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                         dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                         transition cursor-pointer ring-1 ring-transparent"
+                  [ngClass]="{
+                    'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                    isExpanded(it)
+                  }"
+                  (click)="toggleAccordion(it)">
+                  <svg-icon
+                    *ngIf="it.icon"
+                    class="size-5 text-slate-500 dark:text-white/70"
+                    [src]="it.icon">
+                  </svg-icon>
+                  <span class="truncate">{{ menuTitle(it.title) }}</span>
+                  <svg
+                    class="ml-auto size-4 text-slate-500 dark:text-white/70 transition-transform"
+                    [ngClass]="{ 'rotate-90': isExpanded(it) }"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2">
+                    <path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+                <div
+                  class="px-2"
+                  [ngClass]="isExpanded(it) ? 'opacity-100' : 'opacity-0'"
+                  [style.transition]="'opacity 200ms ease'">
+                  <div
+                    class="grid transition-all duration-300 ease-out"
+                    [ngClass]="isExpanded(it) ? 'grid-rows-[1fr] mt-1' : 'grid-rows-[0fr] mt-0'">
+                    <div class="overflow-hidden">
+                      <div class="lined-list pl-4" style="--leaf-h:2.25rem;--gap:.25rem">
+                        @for (gch of it.children; track gch.title) {
+                          <a
+                            [routerLink]="grandChildLinkInline(it, it, gch)"
+                            routerLinkActive="active"
+                            #rla2G="routerLinkActive"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                            class="lined-item flex items-center gap-3 h-9 px-3 rounded-md text-[13px]
+                                   text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                                   dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                                   transition ring-1 ring-transparent"
+                            [ngClass]="{
+                              'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                              rla2G.isActive
+                            }">
+                            <span class="truncate">{{ menuTitle(gch.title) }}</span>
+                          </a>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            } @else {
+              <a
+                [routerLink]="[submenuBase(), it.url || '']"
+                routerLinkActive="active"
+                #rla2="routerLinkActive"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="group flex items-center gap-3 h-11 px-3 rounded-xl text-sm
+                       text-slate-700 hover:bg-slate-100 hover:text-slate-900
+                       dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white
+                       transition cursor-pointer ring-1 ring-slate-200 hover:ring-slate-300
+                       dark:ring-white/10 dark:hover:ring-white/15"
+                [ngClass]="{
+                  'bg-slate-200 text-slate-900 ring-slate-300 dark:bg-white/10 dark:text-white dark:ring-white/15':
+                  rla2.isActive
+                }">
+                <svg-icon
+                  *ngIf="it.icon"
+                  class="size-5 text-slate-500 group-hover:text-slate-800
+                         dark:text-white/70 dark:group-hover:text-sa-accent"
+                  [src]="it.icon">
+                </svg-icon>
+                <span class="truncate">{{ menuTitle(it.title) }}</span>
+              </a>
+            }
+
+          }
+        </div>
+      </section>
+    </aside>
+
+    <main class="flex-1 min-w-0 overflow-y-auto bg-white text-sa-black dark:bg-sa-black dark:text-sa-text z-10">
+      <div class="flex-1 w-full h-full overflow-y-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </div>
+
+  <button
+    *ngIf="menuOpen && isMobile"
+    (click)="toggleMenu()"
+    class="fixed inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ease-in-out z-20">
+  </button>
+</div>
+}
