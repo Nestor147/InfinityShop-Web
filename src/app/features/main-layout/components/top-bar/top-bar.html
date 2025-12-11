@@ -2,7 +2,6 @@
   <div class="mx-auto max-w-7xl px-3 sm:px-4 lg:px-6">
     <div class="h-14 sm:h-16 flex items-center gap-3">
 
-      <!-- Botón: Sidebar -->
       <button
         type="button"
         (click)="menuToggle.emit()"
@@ -14,10 +13,7 @@
         </svg>
       </button>
 
-      <!-- Marca / Título -->
       <div class="hidden sm:flex items-center gap-2 select-none">
-        <!-- (Opcional) logo -->
-        <!-- <svg-icon class="w-6 h-6 text-sa-accent" src="assets/icons/icon-app.svg"></svg-icon> -->
         <span class="text-sm font-medium tracking-wide text-sa-text/85">{{ brand }}</span>
         <span *ngIf="envLabel"
               class="ml-2 text-[10px] px-2 py-0.5 rounded-lg border border-white/10 bg-white/5 text-sa-text/70">
@@ -27,7 +23,6 @@
 
       <div class="ml-auto flex items-center gap-1 sm:gap-2">
 
-        <!-- Launcher (íconos SVG) -->
         <div class="relative" data-menu-root>
           <button
             type="button"
@@ -36,7 +31,6 @@
                    focus:outline-none focus-visible:ring-2 focus-visible:ring-sa-accent"
             aria-haspopup="menu"
             [attr.aria-expanded]="launcherOpen()">
-            <!-- 3x3 dots -->
             <svg class="size-5" viewBox="0 0 24 24" fill="currentColor">
               <circle cx="5" cy="5" r="1.6"/><circle cx="12" cy="5" r="1.6"/><circle cx="19" cy="5" r="1.6"/>
               <circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>
@@ -109,7 +103,6 @@
           </div>
         </div>
 
-        <!-- Usuario -->
         <div class="relative" data-menu-root>
           <button
             type="button"
