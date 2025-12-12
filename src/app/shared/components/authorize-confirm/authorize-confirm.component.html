@@ -1,0 +1,84 @@
+<div class="w-full max-w-md bg-sa-surface rounded-lg border border-sa-border shadow-md p-6">
+  <!-- Ícono compacto -->
+  <div
+    [ngClass]="iconColorClass"
+    class="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center border"
+    aria-hidden="true">
+    <svg-icon class="w-6 h-6" src="assets/icons/icon-info.svg"></svg-icon>
+  </div>
+
+  <!-- Header compacto -->
+  <header class="text-center mb-4">
+    <h1 class="text-lg font-semibold text-sa-ink">{{ title }}</h1>
+  </header>
+
+  <!-- Body compacto -->
+  <section class="space-y-3">
+    <p class="text-sm text-sa-ink-soft text-center leading-relaxed">{{ message1 }}</p>
+    <p
+      [ngClass]="borderColorClass"
+      class="text-sm font-medium text-sa-ink bg-sa-surface-soft px-3 py-2.5 rounded border-l-2">
+      {{ message2 }}
+    </p>
+
+    <!-- Campo de confirmación -->
+    <div class="space-y-2 pt-1">
+      <!-- Hint compacto -->
+      <div class="flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 text-xs sm:text-sm">
+        <span class="text-sa-gray-500 font-medium">Escribe exactamente:</span>
+        <span
+          [ngClass]="pillColorClass"
+          class="px-2.5 py-1 rounded-md border border-dashed text-xs font-semibold select-all">
+          {{ expectedText }}
+        </span>
+      </div>
+
+      <!-- Input compacto -->
+      <div class="relative">
+        <input
+          type="text"
+          [ngModel]="inputValue()"
+          (ngModelChange)="inputValue.set($event)"
+          class="w-full px-3 py-2 pr-10 text-sm border rounded-md bg-white text-sa-ink placeholder:text-sa-gray-500 focus:outline-none focus:ring-2 transition-all"
+          [ngClass]="{
+            'border-sa-border focus:ring-sa-border/20': !inputValue().length,
+            'border-sa-accent/60 focus:ring-sa-accent/20 bg-sa-accent/5': isMatch(),
+            'border-sa-error/60 focus:ring-sa-error/20 bg-sa-error/5': !isMatch() && inputValue().length > 0
+          }"
+          [attr.aria-label]="'Campo de confirmación'"
+          placeholder="Escribe aquí…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+
+        <!-- Indicador de estado -->
+        <div class="absolute right-2.5 top-1/2 -translate-y-1/2">
+          <div
+            *ngIf="isMatch()"
+            class="w-5 h-5 rounded-full bg-sa-accent/10 border border-sa-accent/30 flex items-center justify-center">
+            <svg-icon class="w-3 h-3 text-sa-accent" src="assets/icons/icon-check.svg"></svg-icon>
+          </div>
+          <div
+            *ngIf="!isMatch() && inputValue().length > 0"
+            class="w-5 h-5 rounded-full bg-sa-error/10 border border-sa-error/30 flex items-center justify-center">
+            <svg-icon class="w-3 h-3 text-sa-error" src="assets/icons/icon-close.svg"></svg-icon>
+          </div>
+        </div>
+      </div>
+
+      <small class="text-xs text-sa-gray-500 text-center block">
+        Ignora mayúsculas/minúsculas y espacios al inicio/fin.
+      </small>
+    </div>
+  </section>
+
+  <!-- Footer compacto y responsive -->
+  <footer class="mt-6 flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+    <button buttonCancel class="flex-1 order-2 sm:order-1" (click)="onClose()">
+      Cancelar
+    </button>
+    <button buttonDefault class="flex-1 order-1 sm:order-2" (click)="onConfirm()" [disabled]="!isMatch()">
+      Confirmar
+    </button>
+  </footer>
+</div>

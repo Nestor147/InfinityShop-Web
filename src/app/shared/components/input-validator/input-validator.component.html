@@ -1,0 +1,126 @@
+<div [formGroup]="formGroup" class="w-full">
+  <div class="flex items-center gap-2">
+    <label
+      authenticationLabel
+      [formGroup]="formGroup"
+      [controlName]="controlName"
+      [for]="controlName"
+      class="flex-1">
+      {{ label }}<span *ngIf="isRequired" class="text-sa-error"> *</span>
+    </label>
+
+    <!-- Tooltip con ícono de interrogación -->
+    <div *ngIf="helpTooltip" class="relative inline-block">
+      <button
+        type="button"
+        (mouseenter)="showTooltip = true"
+        (mouseleave)="showTooltip = false"
+        (focus)="showTooltip = true"
+        (blur)="showTooltip = false"
+        class="w-5 h-5 flex items-center justify-center rounded-full bg-sa-info text-white text-xs font-semibold hover:bg-sa-accent transition-colors cursor-help focus:outline-none focus:ring-2 focus:ring-sa-accent-soft focus:ring-offset-1"
+        aria-label="Información adicional">
+        ?
+      </button>
+
+      <!-- Tooltip popup - Responsive -->
+       @if (showTooltip) {      
+        <div
+        class="absolute z-50 left-1/2 -translate-x-1/2 bottom-full mb-2 w-48 sm:w-56 md:w-64 max-w-[90vw] px-3 py-2 text-xs sm:text-sm text-sa-text bg-sa-primary rounded-lg shadow-sa-card pointer-events-none">
+        <div class="relative">
+          {{ helpTooltip }}
+          <!-- Flecha del tooltip -->
+          <div class="absolute left-1/2 -translate-x-1/2 -bottom-4 w-0 h-0 border-l-6 sm:border-l-8 border-l-transparent border-r-6 sm:border-r-8 border-r-transparent border-t-6 sm:border-t-8 border-t-sa-primary"></div>
+        </div>
+      </div>}
+
+    </div>
+  </div>
+
+  <ng-container *ngIf="isSwitch; else notSwitch">
+    <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 py-1">
+      <button type="button"
+              class="px-2 sm:px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md flex-1 sm:flex-initial min-w-[60px]"
+              [ngClass]="!control.value
+                ? 'bg-sa-accent text-white border-sa-accent hover:bg-sa-info'
+                : 'bg-sa-surface text-sa-ink border-sa-border hover:bg-sa-surface-alt'"
+              (click)="setBool(false)">
+        {{ switchNoText }}
+      </button>
+
+      <label class="relative inline-flex items-center cursor-pointer select-none shrink-0">
+        <input type="checkbox" class="sr-only peer" [formControlName]="controlName" [id]="controlName" />
+        <div class="w-11 h-6 rounded-full bg-sa-gray-300 transition-all duration-300 peer-checked:bg-sa-accent shadow-inner"></div>
+        <span class="absolute left-1 top-1 w-4 h-4 rounded-full bg-white shadow-md transition-all duration-300 peer-checked:translate-x-5"></span>
+      </label>
+
+      <button type="button"
+              class="px-2 sm:px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 shadow-sm hover:shadow-md flex-1 sm:flex-initial min-w-[60px]"
+              [ngClass]="control.value
+                ? 'bg-sa-accent text-white border-sa-accent hover:bg-sa-info'
+                : 'bg-sa-surface text-sa-ink border-sa-border hover:bg-sa-surface-alt'"
+              (click)="setBool(true)">
+        {{ switchYesText }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #notSwitch>
+    <ng-container *ngIf="!isSelect && !isTextarea; else areaOrSelect">
+      <input
+        authenticationInput
+        [attr.minlength]="minLength ?? null"
+        [attr.maxlength]="maxLength ?? null"
+        [type]="type"
+        [placeholder]="placeholder"
+        [formControlName]="controlName"
+        [id]="controlName"
+        [disabled]="control.disabled"
+        [readOnly]="control.disabled"
+        [attr.aria-disabled]="control.disabled" />
+    </ng-container>
+
+    <ng-template #areaOrSelect>
+      <ng-container *ngIf="isTextarea; else selectField">
+        <textarea
+          authenticationInput
+          [attr.minlength]="minLength ?? null"
+          [attr.maxlength]="maxLength ?? null"
+          [rows]="rows"
+          [style.resize]="resize ? 'vertical' : 'none'"
+          [placeholder]="placeholder"
+          [formControlName]="controlName"
+          [id]="controlName"
+          [disabled]="control.disabled"
+          [readOnly]="control.disabled"
+          [attr.aria-disabled]="control.disabled"></textarea>
+      </ng-container>
+
+      <ng-template #selectField>
+        <select
+          authenticationInput
+          [formControlName]="controlName"
+          [id]="controlName"
+          [disabled]="control.disabled"
+          [attr.aria-disabled]="control.disabled">
+          <ng-content select="option"></ng-content>
+        </select>
+      </ng-template>
+    </ng-template>
+  </ng-template>
+
+  <div class="mt-1.5 flex items-center justify-between text-xs">
+    <span
+      class="transition-colors duration-200 font-medium"
+      [class.text-sa-error]="isInvalid"
+      [class.text-sa-ink-soft]="!isInvalid">
+      {{ isInvalid ? (firstError || '') : helperText }}
+    </span>
+
+    <span *ngIf="!isSwitch && maxLength"
+          class="text-sa-gray-500 font-mono"
+          [class.text-sa-warning]="charCount > maxLength * 0.9"
+          [class.font-semibold]="charCount > maxLength * 0.9">
+      {{ charCount }}/{{ maxLength }}
+    </span>
+  </div>
+</div>
