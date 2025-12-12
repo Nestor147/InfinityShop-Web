@@ -1,0 +1,26 @@
+<ng-container *ngIf="!mostrarFormulario">
+  <app-table-header
+    [config]="productHeaderConfig"
+    [searchFilter]="searchFilter"
+    [selectedDropdownValue]="selectedSubcategoryId"
+    (searchChange)="onSearchChange($event)"
+    (dropdownChange)="onDropdownChange($event)"
+    (addButtonClick)="addProduct()"
+    (contactSellerClick)="configurePix()">
+  </app-table-header>
+  
+  <div *ngIf="data" class="rounded-lg bg-white shadow-sm">
+    <app-master-table
+      [data]="data"
+      (click)="handleTableClick($event)"
+      (paginationChange)="handlePaginationChange($event)">
+    </app-master-table>
+  </div>
+</ng-container>
+
+<ng-container>
+  <app-forms-product
+    *ngIf="mostrarFormulario"
+    (goBack)="goToBack()">
+  </app-forms-product>
+</ng-container>

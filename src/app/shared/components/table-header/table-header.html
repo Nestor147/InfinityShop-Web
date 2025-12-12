@@ -1,0 +1,135 @@
+<!-- table-header.component.html -->
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+  <!-- Title -->
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">
+      {{ config.title }}
+    </h2>
+  </div>
+
+  <!-- Search and Actions Section -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- Search and Dropdown -->
+    <div class="flex flex-col sm:flex-row gap-4 flex-1">
+      <!-- Search Field -->
+      <div *ngIf="config.showSearch" class="relative flex-1 max-w-md">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input
+          type="text"
+          [placeholder]="config.searchPlaceholder"
+          [(ngModel)]="searchFilter"
+          (ngModelChange)="onSearchChange($event)"
+          class="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                 focus:outline-none transition-colors
+                 placeholder:text-gray-400 text-gray-700"
+        />
+      </div>
+
+      <!-- Dropdown -->
+      <div *ngIf="config.showDropdown" class="min-w-[200px]">
+        <select
+          [(ngModel)]="selectedDropdownValue"
+          (ngModelChange)="onDropdownChange($event)"
+          class="w-full px-4 py-2.5 border border-gray-300 rounded-lg
+                 focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                 focus:outline-none transition-colors
+                 text-gray-700 bg-white appearance-none
+                 bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M6%209l6%206%206-6%22%2F%3E%3C%2Fsvg%3E')]
+                 bg-no-repeat bg-[right_0.75rem_center] bg-[length:1em] pr-10"
+        >
+          <option *ngFor="let option of config.dropdownOptions"
+                  [value]="option.id">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-wrap gap-3 flex-shrink-0">
+      <!-- Custom Button -->
+      <button
+        *ngIf="config.customButtonText"
+        (click)="onCustomButtonClick()"
+        class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-600
+               text-white rounded-lg font-medium hover:bg-gray-700
+               focus:outline-none focus:ring-2 focus:ring-gray-500
+               focus:ring-offset-2 transition-colors"
+      >
+        <ng-container *ngIf="config.customButtonIcon; else defaultCustomIcon">
+          <span [innerHTML]="config.customButtonIcon"></span>
+        </ng-container>
+        <ng-template #defaultCustomIcon>
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+          </svg>
+        </ng-template>
+        {{ config.customButtonText }}
+      </button>
+
+      <!-- Add Button / Pix Button -->
+      <ng-container *ngIf="config.showAddButton">
+        <ng-container *ngIf="config.qrLoading; else addButtonTemplate">
+          <button
+            disabled
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-gray-100
+                   text-gray-500 rounded-lg font-medium cursor-not-allowed
+                   transition-colors"
+          >
+            <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Loading...
+          </button>
+        </ng-container>
+
+        <ng-template #addButtonTemplate>
+          <!-- Normal Add Button -->
+          <button
+            *ngIf="config.hasVendorQr || !config.showPixOption"
+            [disabled]="config.disableAddButton"
+            (click)="onAddButtonClick()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600
+                   text-white rounded-lg font-medium hover:bg-blue-700
+                   focus:outline-none focus:ring-2 focus:ring-blue-500
+                   focus:ring-offset-2 transition-colors
+                   disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <ng-container *ngIf="config.addButtonIcon; else defaultAddIcon">
+              <span [innerHTML]="config.addButtonIcon"></span>
+            </ng-container>
+            <ng-template #defaultAddIcon>
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </ng-template>
+            {{ config.addButtonText }}
+          </button>
+
+          <!-- Pix Button (only shown when showPixOption is true and hasVendorQr is false) -->
+          <button
+            *ngIf="!config.hasVendorQr && config.showPixOption"
+            (click)="onContactSellerClick()"
+            class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-600
+                   text-white rounded-lg font-medium hover:bg-green-700
+                   focus:outline-none focus:ring-2 focus:ring-green-500
+                   focus:ring-offset-2 transition-colors"
+          >
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            {{ config.pixButtonText }}
+          </button>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -27,3 +27,11 @@ export interface ResponseAuthentication<T>{
   mensajes?: Mensaje[],
   paginacion?: Paginacion
 }
+
+export interface ApiResponse<T> {
+  data: T;
+	messages?: any;
+  statusCode: number;
+    success?: boolean;
+  message?: string;
+}

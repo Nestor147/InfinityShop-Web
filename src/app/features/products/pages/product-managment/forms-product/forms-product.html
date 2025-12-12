@@ -1,0 +1,180 @@
+<div class="max-w-4xl mx-auto p-6">
+  <form class="bg-sa-surface shadow-sa-card rounded-lg p-6" (ngSubmit)="onSubmit()" #productForm="ngForm">
+    <app-form-header
+      title="New Product"
+      subtitle="Complete the information to add a new product to the catalog">
+    </app-form-header>
+    <div class="space-y-6">
+      <!-- Basic Information -->
+      <div>
+        <h3 class="text-lg font-medium text-sa-ink mb-4">Basic Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="name" class="block text-sm font-medium text-sa-ink mb-1">
+              Product Name *
+            </label>
+            <input
+              type="text"
+              id="name"
+              [(ngModel)]="product.name"
+              name="name"
+              required
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+          </div>
+          <div>
+            <label for="sku" class="block text-sm font-medium text-sa-ink mb-1">
+              SKU *
+            </label>
+            <input
+              type="text"
+              id="sku"
+              [(ngModel)]="product.sku"
+              name="sku"
+              required
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+          </div>
+          <div>
+            <label for="category" class="block text-sm font-medium text-sa-ink mb-1">
+              Category *
+            </label>
+            <select
+              id="category"
+              [(ngModel)]="product.category"
+              name="category"
+              required
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+              <option value="">Select category</option>
+              <option value="electronics">Electronics</option>
+              <option value="clothing">Clothing</option>
+              <option value="food">Food</option>
+              <option value="books">Books</option>
+            </select>
+          </div>
+          <div>
+            <label for="subcategory" class="block text-sm font-medium text-sa-ink mb-1">
+              Subcategory
+            </label>
+            <input
+              type="text"
+              id="subcategory"
+              [(ngModel)]="product.subcategory"
+              name="subcategory"
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+          </div>
+        </div>
+      </div>
+
+      <!-- Price & Inventory -->
+      <div>
+        <h3 class="text-lg font-medium text-sa-ink mb-4">Price & Inventory</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label for="price" class="block text-sm font-medium text-sa-ink mb-1">
+              Price *
+            </label>
+            <div class="relative rounded-md shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="text-sa-gray-500 sm:text-sm">$</span>
+              </div>
+              <input
+                type="number"
+                id="price"
+                [(ngModel)]="product.price"
+                name="price"
+                step="0.01"
+                min="0"
+                required
+                class="pl-7 w-full px-3 py-2 border border-sa-border rounded-md focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+            </div>
+          </div>
+          <div>
+            <label for="stock" class="block text-sm font-medium text-sa-ink mb-1">
+              Available Stock *
+            </label>
+            <input
+              type="number"
+              id="stock"
+              [(ngModel)]="product.stock"
+              name="stock"
+              min="0"
+              required
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+          </div>
+          <div>
+            <label for="unit" class="block text-sm font-medium text-sa-ink mb-1">
+              Unit of Measure
+            </label>
+            <select
+              id="unit"
+              [(ngModel)]="product.unit"
+              name="unit"
+              class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent">
+              <option value="unit">Unit</option>
+              <option value="kg">Kilogram</option>
+              <option value="liter">Liter</option>
+              <option value="package">Package</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-medium text-sa-ink mb-1">
+          Product Description
+        </label>
+        <textarea
+          id="description"
+          [(ngModel)]="product.description"
+          name="description"
+          rows="4"
+          class="w-full px-3 py-2 border border-sa-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-sa-accent focus:border-sa-accent"
+          placeholder="Describe the main features of the product...">
+        </textarea>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <label class="block text-sm font-medium text-sa-ink mb-3">
+          Product Status
+        </label>
+        <div class="flex items-center space-x-6">
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              [(ngModel)]="product.status"
+              name="status"
+              value="active"
+              class="h-4 w-4 text-sa-accent focus:ring-sa-accent border-sa-border">
+            <span class="ml-2 text-sm text-sa-ink">Active</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              [(ngModel)]="product.status"
+              name="status"
+              value="inactive"
+              class="h-4 w-4 text-sa-accent focus:ring-sa-accent border-sa-border">
+            <span class="ml-2 text-sm text-sa-ink">Inactive</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-3 pt-6 border-t border-sa-border">
+        <button
+          type="button"
+          (click)="goBack.emit()"
+          class="px-4 py-2 border border-sa-border rounded-md shadow-sm text-sm font-medium text-sa-ink bg-white hover:bg-sa-surface-soft focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent transition-colors duration-200">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="productForm.invalid"
+          class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sa-primary hover:bg-sa-bg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+          Save
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
