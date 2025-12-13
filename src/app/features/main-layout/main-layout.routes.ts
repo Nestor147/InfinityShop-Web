@@ -17,6 +17,10 @@ const mainLayoutRoutes: Routes = [
         path: 'products',
         component: ProductsLayout,
         loadChildren: () => import('../products/products.routes')
+      },
+      {
+        path: 'company',
+        loadComponent: () => import('../core/company/index/company.component')
       }
     ]
   },

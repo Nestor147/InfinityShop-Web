@@ -4,11 +4,10 @@ import { ItemCombo } from "../models/combos/item-combo.interface";
 export function obtenerDescripcion(
     listaValores: ItemCombo[],
     valorBuscado: string
-  ): string {
-    // @ts-ignore
+  ): string | undefined {
     return listaValores?.find(
-      (estaSeleccionado) => estaSeleccionado.valor === valorBuscado
-    )?.descripcion;
+      (estaSeleccionado) => estaSeleccionado.value === valorBuscado
+    )?.description;
   }
   export function construirParametrosFiltro<T>(filtro: T): HttpParams {
     let parametros = new HttpParams();
@@ -33,5 +32,5 @@ export function obtenerDescripcion(
   }
 
   export function buscarDescripcionCombo(objeto: ItemCombo[] | undefined, valor: string) {
-    return objeto?.filter((obj) => obj.valor === valor)[0].descripcion
+    return objeto?.filter((obj) => obj.value === valor)[0].description
   }

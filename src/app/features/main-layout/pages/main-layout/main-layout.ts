@@ -104,6 +104,7 @@ export default class MainLayout {
     { name: 'Inicio', icon: '/assets/icons/icon-home.svg', route: '', hasChildren: false },
     { name: 'Gestionar Aplicaciones', icon: '/assets/icons/icon-applications.svg', route: 'applications', hasChildren: false },
     { name: 'Products', icon: '/assets/icons/icon-applications.svg', route: 'products', hasChildren: false },
+    { name: 'Company', icon: '/assets/icons/icon-company.svg', route: 'company', hasChildren: false },
   ];
 
   keyFor(it: MenuItemInterface) {
