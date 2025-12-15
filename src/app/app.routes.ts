@@ -5,7 +5,7 @@ export const routes: Routes = [
     { path: 'auth', loadChildren: () => import('./features/auth/auth.routes') },
     {
         path: '',
-        canMatch: [authCanMatch],
+        // canMatch: [authCanMatch],
         loadChildren: () => import('./features/main-layout/main-layout.routes')
     },
     { path: '**', redirectTo: '' },
