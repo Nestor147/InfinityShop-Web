@@ -19,7 +19,7 @@ export class AuthService {
   private readonly router = inject(Router);
   private readonly broadcast = inject(AuthBroadcast);
 
-  private readonly api = ('https://masterautenticacion.backendatacado.com/api').replace(/\/+$/, '');
+  private readonly api = ('https://securirysystem.runasp.net/api').replace(/\/+$/, '');
   private readonly ctx = new HttpContext().set(SKIP_AUTH, true);
 
   login(body: LoginRequest): Observable<TokenPair> {
