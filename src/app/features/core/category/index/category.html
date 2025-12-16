@@ -1,0 +1,24 @@
+<ng-container *ngIf="!mostrarFormulario">
+  <app-table-header
+    [config]="categoryHeaderConfig()"
+    [searchFilter]="searchFilter"
+    (searchChange)="onSearchChange($event)"
+    (addButtonClick)="addCategory()">
+  </app-table-header>
+
+  <div *ngIf="data" class="rounded-lg bg-white shadow-sm">
+    <app-master-table
+      [data]="data"
+      (click)="handleTableClick($event)"
+      (paginationChange)="handlePaginationChange($event)">
+    </app-master-table>
+  </div>
+</ng-container>
+
+<ng-container>
+  <app-form-category
+    *ngIf="mostrarFormulario"
+    [categoryId]="categoryIdToEdit"
+    (goBack)="goToBack()">
+  </app-form-category>
+</ng-container>

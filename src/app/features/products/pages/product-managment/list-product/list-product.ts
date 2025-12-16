@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { TableHeaderConfig } from '../../../../../shared/models/interface/table-header-config.interface';
 import { TableHeader } from '../../../../../shared/components/table-header/table-header';
 import { DropdownOption } from '../../../../../shared/models/interface/dropdown-option.interface';
@@ -9,6 +9,10 @@ import { MasterTableResponse } from '../../../../../shared/models/interface/resp
 import { CommonModule } from '@angular/common';
 import { FormsProduct } from "../forms-product/forms-product";
 import { GlowToastService } from '../../../../../shared/components/glow-toast/glow-toast.service';
+import { DialogService } from '../../../../../shared/components/dialog-modal';
+import { AuthorizeConfirmComponent } from '../../../../../shared/components/authorize-confirm/authorize-confirm.component';
+import { LangService } from '../../../../../shared/services/lang/language.service';
+import { PRODUCT_LIST_TEXTS, ProductListTexts } from './list-product.i18n';
 
 @Component({
   selector: 'app-list-product',
@@ -20,31 +24,35 @@ export default class ListProduct implements OnInit {
   #categoryService = inject(CategoryService);
   #productService = inject(ProductService);
   #toastService = inject(GlowToastService);
+  #dialogService = inject(DialogService);
+  #langService = inject(LangService);
 
   mostrarFormulario = false;
+  productIdToEdit: string | null = null;
 
   pageSize = 10;
   numberPage = 1;
 
-  data!:  MasterTableResponse;
+  data!: MasterTableResponse;
 
   searchFilter: string = '';
   selectedSubcategoryId: string | null = null;
 
   categories: DropdownOption[] = [];
-  productHeaderConfig: TableHeaderConfig = {
-    title: 'Product Management',
-    searchPlaceholder: 'Search products...',
-    dropdownOptions: [],
+
+  /** Computed de los textos traducidos del componente */
+  readonly t = computed<ProductListTexts>(() => PRODUCT_LIST_TEXTS[this.#langService.lang()]);
+
+  /** Configuración del header de la tabla con textos traducidos */
+  productHeaderConfig = computed<TableHeaderConfig>(() => ({
+    title: this.t().title,
+    searchPlaceholder: this.t().searchPlaceholder,
+    dropdownOptions: this.categories,
     showDropdown: true,
     showSearch: true,
     showAddButton: true,
-    // showPixOption: true,
-    // hasVendorQr: false,
-    // qrLoading: false,
-    addButtonText: 'Add Product',
-    // pixButtonText: 'Configure Pix'
-  };
+    addButtonText: this.t().addButtonText,
+  }));
 
   ngOnInit(): void {
     this.loadCategories();
@@ -62,16 +70,11 @@ loadCategories() {
 
         const allCategoriesOption = {
           id: '0',
-          name: 'All Categories',
+          name: this.t().allCategories,
           value: '0'
         };
 
         this.categories.unshift(allCategoriesOption);
-
-        this.productHeaderConfig = {
-          ...this.productHeaderConfig,
-          dropdownOptions: this.categories
-        };
 
         this.selectedSubcategoryId = '0';
       },
@@ -80,15 +83,10 @@ loadCategories() {
 
         // Datos de prueba si hay error
         this.categories = [
-          { id: '0', name: 'All Categories', value: '0' },
+          { id: '0', name: this.t().allCategories, value: '0' },
           { id: '1', name: 'Test Category 1', value: '1' },
           { id: '2', name: 'Test Category 2', value: '2' }
         ];
-
-        this.productHeaderConfig = {
-          ...this.productHeaderConfig,
-          dropdownOptions: this.categories
-        };
       }
     });
   }
@@ -128,7 +126,7 @@ loadCategories() {
         this.#confirmDelete(productId);
         break;
       case 'edit':
-        // this.#navigateToEdit(productId);
+        this.editProduct(productId);
         break;
       case 'addProductVariation':
         // this.#navigateToPerspectiva(productId);
@@ -137,19 +135,31 @@ loadCategories() {
         console.warn('Acción no reconocida:', accion);
     }
   }
-  #confirmDelete(productId: string): void {
-    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este producto?');
 
-    if (confirmDelete) {
-      this.#deleteProduct(productId);
-    }
+  #confirmDelete(productId: string): void {
+    this.#dialogService.open(AuthorizeConfirmComponent, {
+      data: {
+        title: this.t().deleteTitle,
+        message1: this.t().deleteMessage1,
+        message2: this.t().deleteMessage2,
+        expectedText: this.t().expectedText,
+        type: 'error'
+      }
+    });
+
+    this.#dialogService.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.#deleteProduct(productId);
+      }
+    });
   }
+
   #deleteProduct(productId: string): void {
     this.#productService.deleteProductById(productId).subscribe({
       next: (response) => {
         this.#toastService.open(
-          'Product delete',
-          response.messages[0].description || 'Producto eliminado correctamente',
+          this.t().deleteTitle,
+          response.messages[0].description || this.t().deleteSuccess,
           {
             type: response.messages[0].type ? 'success' : 'error',
             duration: 3000
@@ -159,8 +169,8 @@ loadCategories() {
       },
       error: (error) => {
         this.#toastService.open(
-          'Product delete',
-          error.messages[0].description || 'Producto eliminado correctamente',
+          this.t().deleteTitle,
+          error.messages[0].description || this.t().deleteError,
           {
             type: error.messages[0].type ? 'error' : 'success',
             duration: 3000
@@ -189,16 +199,22 @@ loadCategories() {
   }
 
   addProduct() {
+    this.productIdToEdit = null;
     this.mostrarFormulario = true;
     console.log('Add product clicked');
   }
 
-  configurePix() {
-    console.log('Configure Pix clicked');
+  editProduct(productId: string) {
+    this.productIdToEdit = productId;
+    this.mostrarFormulario = true;
+    console.log('Edit product clicked with ID:', productId);
   }
 
   goToBack() {
     this.mostrarFormulario = false;
-    this.getAllProducts();
+    this.productIdToEdit = null;
+    setTimeout(() => {
+      this.getAllProducts();
+    }, 100);
   }
 }

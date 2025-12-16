@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, HostListener, Input, Output, signal } from '@angular/core';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { LanguageSelectorComponent } from '../../../../shared/components/language-selector';
 
 @Component({
   selector: 'app-top-bar',
-  imports: [CommonModule],
+  imports: [CommonModule, LanguageSelectorComponent],
   templateUrl: './top-bar.html'
 })
 export class TopBar {

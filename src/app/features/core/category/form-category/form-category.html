@@ -1,0 +1,93 @@
+<div class="max-w-4xl mx-auto p-6">
+  <form [formGroup]="categoryForm" class="bg-sa-surface shadow-sa-card rounded-lg p-6" (ngSubmit)="onSubmit()">
+    <app-form-header
+      [title]="isEditMode ? 'Edit Category' : 'New Category'"
+      [subtitle]="isEditMode ? 'Update the category information' : 'Complete the information to add a new category'">
+    </app-form-header>
+
+    <div class="space-y-6">
+      <!-- Category Information -->
+      <div>
+        <h3 class="text-lg font-medium text-sa-ink mb-4">Category Information</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Company -->
+          <app-input-validator
+            label="Company"
+            [formGroup]="categoryForm"
+            controlName="companyId"
+            [control]="categoryForm.get('companyId')!"
+            [errorMessages]="errorMessages()"
+            [isSelect]="true"
+            [required]="true"
+            helpTooltip="Select the company for this category">
+            <option value="">Select a company</option>
+            <option *ngFor="let company of companies" [value]="company.id">
+              {{ company.name }}
+            </option>
+          </app-input-validator>
+
+          <!-- Parent Category (Optional) -->
+          <app-input-validator
+            label="Parent Category"
+            [formGroup]="categoryForm"
+            controlName="parentId"
+            [control]="categoryForm.get('parentId')!"
+            [errorMessages]="errorMessages()"
+            [isSelect]="true"
+            [required]="false"
+            helpTooltip="Select a parent category (optional for subcategories)">
+            <option value="">None (Main Category)</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </app-input-validator>
+
+          <!-- Category Name -->
+          <app-input-validator
+            label="Category Name"
+            placeholder="Enter category name"
+            type="text"
+            [formGroup]="categoryForm"
+            controlName="name"
+            [control]="categoryForm.get('name')!"
+            [errorMessages]="errorMessages()"
+            [minLength]="3"
+            [maxLength]="100"
+            [required]="true">
+          </app-input-validator>
+
+          <!-- Category Code -->
+          <app-input-validator
+            label="Category Code"
+            placeholder="Enter category code"
+            type="text"
+            [formGroup]="categoryForm"
+            controlName="code"
+            [control]="categoryForm.get('code')!"
+            [errorMessages]="errorMessages()"
+            [minLength]="2"
+            [maxLength]="20"
+            [required]="true"
+            helpTooltip="Unique code to identify the category">
+          </app-input-validator>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-3 pt-6 border-t border-sa-border">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 border border-sa-border rounded-md shadow-sm text-sm font-medium text-sa-ink bg-white hover:bg-sa-surface-soft focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent transition-colors duration-200">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="categoryForm.invalid"
+          class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sa-primary hover:bg-sa-bg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

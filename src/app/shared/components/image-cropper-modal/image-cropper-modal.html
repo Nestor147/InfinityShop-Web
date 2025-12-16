@@ -1,0 +1,109 @@
+<!-- Modal Backdrop -->
+<div
+  *ngIf="visible"
+  class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center"
+  (click)="cerrar()">
+
+  <!-- Modal Content -->
+  <div
+    class="bg-white rounded-lg shadow-sa-card w-full max-w-[1000px] max-h-[90vh] overflow-hidden flex flex-col"
+    (click)="$event.stopPropagation()">
+
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-sa-border">
+      <h3 class="text-xl font-bold text-sa-ink">Subir Imagen</h3>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 overflow-hidden flex-1">
+      <!-- Si no hay imagen -->
+      <div
+        class="border-2 border-dashed border-sa-error rounded-lg p-8 text-center cursor-pointer hover:bg-sa-surface-soft transition-colors"
+        *ngIf="!imageSrc"
+        (click)="triggerFileInput()">
+        <input #fileInput type="file" accept="image/*" (change)="onImageSelected($event)" hidden>
+        <div class="text-sa-gray-500">
+          <i class="pi pi-upload text-5xl mb-4 block"></i>
+          <p class="text-base mb-2">Agregar o arrastrar imagen aquí</p>
+          <small class="text-sm text-sa-gray-300">Formatos: JPG, PNG, GIF</small>
+        </div>
+      </div>
+
+      <!-- Si hay imagen -->
+      <div class="flex flex-col gap-4" *ngIf="imageSrc">
+        <div class="flex gap-4 w-full overflow-hidden">
+          <!-- Imagen Original -->
+          <div class="flex-[0_0_60%] text-center">
+            <h4 class="text-sa-primary font-bold mb-2">Imagen Original</h4>
+            <img #imageRef [src]="imageSrc" alt="Imagen original" class="max-w-full max-h-[500px] block mx-auto">
+
+            <!-- Botones herramientas -->
+            <div class="mt-4 flex justify-center flex-wrap gap-2">
+              <button
+                type="button"
+                (click)="zoomIn()"
+                class="w-10 h-10 rounded-full bg-sa-accent border-none text-sa-text flex items-center justify-center hover:bg-sa-accent/90 transition-colors"
+                title="Acercar">
+                <i class="pi pi-search-plus"></i>
+              </button>
+              <button
+                type="button"
+                (click)="zoomOut()"
+                class="w-10 h-10 rounded-full bg-sa-accent border-none text-sa-text flex items-center justify-center hover:bg-sa-accent/90 transition-colors"
+                title="Alejar">
+                <i class="pi pi-search-minus"></i>
+              </button>
+              <button
+                type="button"
+                (click)="resetImage()"
+                class="w-10 h-10 rounded-full bg-sa-gray-500 border-none text-sa-text flex items-center justify-center hover:bg-sa-gray-500/90 transition-colors"
+                title="Reiniciar">
+                <i class="pi pi-refresh"></i>
+              </button>
+              <button
+                type="button"
+                (click)="rotateLeft()"
+                class="w-10 h-10 rounded-full bg-sa-primary border-none text-sa-text flex items-center justify-center hover:bg-sa-primary/90 transition-colors"
+                title="Rotar Izquierda">
+                <i class="pi pi-undo"></i>
+              </button>
+              <button
+                type="button"
+                (click)="changeImage()"
+                class="px-4 py-2 rounded border-2 border-sa-primary text-sa-primary bg-transparent hover:bg-sa-primary/10 transition-colors flex items-center gap-2">
+                <i class="pi pi-image"></i>
+                <span>Cambiar imagen</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Imagen Recortada -->
+          <div class="flex-[0_0_40%] text-center" *ngIf="croppedImage">
+            <h4 class="text-sa-primary font-bold mb-2">Imagen Recortada</h4>
+            <img [src]="croppedImage" alt="Vista previa" class="max-w-full border border-sa-border bg-white">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-sa-border flex justify-end gap-3">
+      <button
+        type="button"
+        (click)="cerrar()"
+        class="px-4 py-2 rounded bg-transparent border-2 border-sa-error text-sa-error hover:bg-sa-error/10 transition-colors flex items-center gap-2">
+        <i class="pi pi-times"></i>
+        <span>Cancelar</span>
+      </button>
+
+      <button
+        type="button"
+        [disabled]="!croppedImage"
+        (click)="onConfirm()"
+        class="px-4 py-2 rounded bg-sa-accent border-none text-white hover:bg-sa-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2">
+        <i class="pi pi-check"></i>
+        <span>Aceptar</span>
+      </button>
+    </div>
+  </div>
+</div>

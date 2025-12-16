@@ -4,8 +4,7 @@ import { ItemCombo } from "../models/combos/item-combo.interface";
 export function obtenerDescripcion(
     listaValores: ItemCombo[],
     valorBuscado: string
-  ): string {
-    // @ts-ignore
+  ): string | undefined {
     return listaValores?.find(
       (estaSeleccionado) => estaSeleccionado.value === valorBuscado
     )?.description;
