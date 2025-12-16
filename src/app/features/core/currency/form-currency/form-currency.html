@@ -1,0 +1,76 @@
+<div class="max-w-4xl mx-auto p-6">
+  <form [formGroup]="currencyForm" class="bg-sa-surface shadow-sa-card rounded-lg p-6" (ngSubmit)="onSubmit()">
+    <app-form-header
+      [title]="isEditMode ? t().editTitle : t().newTitle"
+      [subtitle]="isEditMode ? t().editSubtitle : t().newSubtitle">
+    </app-form-header>
+
+    <div class="space-y-6">
+      <!-- Currency Information -->
+      <div>
+        <h3 class="text-lg font-medium text-sa-ink mb-4">{{ t().currencyInfoTitle }}</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- ISO Code -->
+          <app-input-validator
+            [label]="t().isoCodeLabel"
+            [placeholder]="t().isoCodePlaceholder"
+            type="text"
+            [formGroup]="currencyForm"
+            controlName="isoCode"
+            [control]="currencyForm.get('isoCode')!"
+            [errorMessages]="errorMessages()"
+            [minLength]="3"
+            [maxLength]="3"
+            [required]="true"
+            [helpTooltip]="t().isoCodeHelpTooltip">
+          </app-input-validator>
+
+          <!-- Symbol -->
+          <app-input-validator
+            [label]="t().symbolLabel"
+            [placeholder]="t().symbolPlaceholder"
+            type="text"
+            [formGroup]="currencyForm"
+            controlName="symbol"
+            [control]="currencyForm.get('symbol')!"
+            [errorMessages]="errorMessages()"
+            [minLength]="1"
+            [maxLength]="5"
+            [required]="true"
+            [helpTooltip]="t().symbolHelpTooltip">
+          </app-input-validator>
+
+          <!-- Currency Name -->
+          <app-input-validator
+            [label]="t().currencyNameLabel"
+            [placeholder]="t().currencyNamePlaceholder"
+            type="text"
+            [formGroup]="currencyForm"
+            controlName="name"
+            [control]="currencyForm.get('name')!"
+            [errorMessages]="errorMessages()"
+            [minLength]="3"
+            [maxLength]="100"
+            [required]="true">
+          </app-input-validator>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-3 pt-6 border-t border-sa-border">
+        <button
+          type="button"
+          (click)="onCancel()"
+          class="px-4 py-2 border border-sa-border rounded-md shadow-sm text-sm font-medium text-sa-ink bg-white hover:bg-sa-surface-soft focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent transition-colors duration-200">
+          {{ t().cancelButton }}
+        </button>
+        <button
+          type="submit"
+          [disabled]="currencyForm.invalid"
+          class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-sa-primary hover:bg-sa-bg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sa-accent disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200">
+          {{ isEditMode ? t().updateButton : t().saveButton }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

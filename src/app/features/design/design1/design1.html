@@ -1,0 +1,216 @@
+<div class="min-h-screen bg-sa-bg p-8">
+  <!-- Header con degradado de colores -->
+  <div class="bg-sa-primary rounded-lg p-6 mb-8 shadow-sa-card">
+    <h1 class="text-3xl font-bold text-sa-text mb-2">Formulario de Ejemplo</h1>
+    <p class="text-sa-primary-soft">Jugando con las paletas de colores personalizadas</p>
+  </div>
+
+  <!-- Formulario Principal -->
+  <div class="max-w-4xl mx-auto bg-sa-surface rounded-lg shadow-sa-card p-8">
+    <form class="space-y-6">
+
+      <!-- Sección 1: Información Personal con colores Primary -->
+      <div class="border-l-4 border-sa-primary pl-4">
+        <h2 class="text-2xl font-semibold text-sa-ink mb-4">Información Personal</h2>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sa-ink font-medium mb-2">Nombre Completo</label>
+            <input
+              type="text"
+              class="w-full px-4 py-2 border-2 border-sa-border rounded-lg focus:border-sa-primary focus:outline-none bg-sa-surface-soft text-sa-ink"
+              placeholder="Escribe tu nombre"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sa-ink font-medium mb-2">Email</label>
+            <input
+              type="email"
+              class="w-full px-4 py-2 border-2 border-sa-border rounded-lg focus:border-sa-accent focus:outline-none bg-sa-surface-soft text-sa-ink"
+              placeholder="correo@ejemplo.com"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 2: Detalles con colores Accent -->
+      <div class="border-l-4 border-sa-accent pl-4">
+        <h2 class="text-2xl font-semibold text-sa-accent mb-4">Detalles Adicionales</h2>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sa-ink font-medium mb-2">Descripción</label>
+            <textarea
+              rows="4"
+              class="w-full px-4 py-2 border-2 border-sa-accent-soft rounded-lg focus:border-sa-accent focus:outline-none bg-sa-surface text-sa-ink"
+              placeholder="Cuéntanos sobre ti..."
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <label for="country" class="block text-sa-ink font-medium mb-2">País</label>
+              <select id="country" class="w-full px-4 py-2 border-2 border-sa-border rounded-lg focus:border-sa-info focus:outline-none bg-sa-surface text-sa-ink">
+                <option>Selecciona...</option>
+                <option>Argentina</option>
+                <option>Chile</option>
+                <option>México</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sa-ink font-medium mb-2">Ciudad</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border-2 border-sa-border rounded-lg focus:border-sa-info focus:outline-none bg-sa-surface-soft text-sa-ink"
+                placeholder="Tu ciudad"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sa-ink font-medium mb-2">Código Postal</label>
+              <input
+                type="text"
+                class="w-full px-4 py-2 border-2 border-sa-border rounded-lg focus:border-sa-info focus:outline-none bg-sa-surface-soft text-sa-ink"
+                placeholder="12345"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección 3: Preferencias con colores Warning -->
+      <div class="bg-sa-warning-soft border-l-4 border-sa-warning p-4 rounded-r-lg">
+        <h2 class="text-2xl font-semibold text-sa-warning mb-4">Preferencias</h2>
+
+        <div class="space-y-3">
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-5 h-5 text-sa-warning border-sa-gray-300 rounded focus:ring-sa-warning" />
+            <span class="text-sa-ink">Recibir notificaciones por email</span>
+          </label>
+
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-5 h-5 text-sa-warning border-sa-gray-300 rounded focus:ring-sa-warning" />
+            <span class="text-sa-ink">Suscribirse al boletín mensual</span>
+          </label>
+
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="w-5 h-5 text-sa-warning border-sa-gray-300 rounded focus:ring-sa-warning" />
+            <span class="text-sa-ink">Permitir cookies de terceros</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sección 4: Opciones con Radio Buttons -->
+      <div class="border-l-4 border-sa-info pl-4">
+        <h2 class="text-2xl font-semibold text-sa-info mb-4">Plan de Suscripción</h2>
+
+        <div class="grid grid-cols-3 gap-4">
+          <label class="border-2 border-sa-border rounded-lg p-4 cursor-pointer hover:border-sa-info hover:bg-sa-accent-soft transition">
+            <input type="radio" name="plan" class="mb-2" />
+            <div class="font-bold text-sa-ink">Básico</div>
+            <div class="text-sa-ink-soft text-sm">$9.99/mes</div>
+          </label>
+
+          <label class="border-2 border-sa-accent rounded-lg p-4 cursor-pointer hover:border-sa-accent hover:bg-sa-accent-soft transition bg-sa-accent-soft">
+            <input type="radio" name="plan" class="mb-2" checked />
+            <div class="font-bold text-sa-accent">Popular</div>
+            <div class="text-sa-ink-soft text-sm">$19.99/mes</div>
+          </label>
+
+          <label class="border-2 border-sa-border rounded-lg p-4 cursor-pointer hover:border-sa-primary hover:bg-sa-primary-soft transition">
+            <input type="radio" name="plan" class="mb-2" />
+            <div class="font-bold text-sa-ink">Premium</div>
+            <div class="text-sa-ink-soft text-sm">$29.99/mes</div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sección 5: Alertas/Mensajes con diferentes colores -->
+      <div class="space-y-3">
+        <div class="bg-sa-info/10 border-l-4 border-sa-info p-4 rounded-r-lg">
+          <p class="text-sa-info font-medium">Info: Todos los campos son opcionales</p>
+        </div>
+
+        <div class="bg-sa-error/10 border-l-4 border-sa-error p-4 rounded-r-lg">
+          <p class="text-sa-error font-medium">Error: Por favor verifica los campos marcados</p>
+        </div>
+
+        <div class="bg-sa-warning/10 border-l-4 border-sa-warning p-4 rounded-r-lg">
+          <p class="text-sa-warning font-medium">Advertencia: Algunos datos pueden ser públicos</p>
+        </div>
+      </div>
+
+      <!-- Botones de Acción con diferentes colores -->
+      <div class="flex justify-between items-center pt-6 border-t-2 border-sa-border">
+        <button
+          type="button"
+          class="px-6 py-3 bg-sa-surface-alt text-sa-ink-soft rounded-lg hover:bg-sa-gray-300 transition font-medium"
+        >
+          Cancelar
+        </button>
+
+        <div class="flex gap-3">
+          <button
+            type="button"
+            class="px-6 py-3 bg-sa-accent text-sa-text rounded-lg hover:bg-sa-accent/90 transition font-medium shadow-lg"
+          >
+            Guardar Borrador
+          </button>
+
+          <button
+            type="submit"
+            class="px-6 py-3 bg-sa-primary text-sa-text rounded-lg hover:bg-sa-primary/90 transition font-medium shadow-lg"
+          >
+            Enviar Formulario
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Footer con showcase de colores -->
+  <div class="mt-8 max-w-4xl mx-auto">
+    <h3 class="text-sa-text font-semibold mb-4 text-center">Paleta de Colores Utilizada</h3>
+    <div class="grid grid-cols-6 gap-2">
+      <div class="bg-sa-black h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">black</span>
+      </div>
+      <div class="bg-sa-bg h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">bg</span>
+      </div>
+      <div class="bg-sa-primary h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">primary</span>
+      </div>
+      <div class="bg-sa-accent h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">accent</span>
+      </div>
+      <div class="bg-sa-warning h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">warning</span>
+      </div>
+      <div class="bg-sa-error h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">error</span>
+      </div>
+      <div class="bg-sa-surface h-16 rounded border-2 border-sa-border flex items-center justify-center">
+        <span class="text-xs text-sa-ink">surface</span>
+      </div>
+      <div class="bg-sa-surface-alt h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-ink">surface-alt</span>
+      </div>
+      <div class="bg-sa-primary-soft h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-ink">primary-soft</span>
+      </div>
+      <div class="bg-sa-accent-soft h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-ink">accent-soft</span>
+      </div>
+      <div class="bg-sa-warning-soft h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-ink">warning-soft</span>
+      </div>
+      <div class="bg-sa-info h-16 rounded flex items-center justify-center">
+        <span class="text-xs text-sa-text">info</span>
+      </div>
+    </div>
+  </div>
+</div>

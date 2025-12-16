@@ -1,12 +1,11 @@
 <ng-container *ngIf="!mostrarFormulario">
   <app-table-header
-    [config]="productHeaderConfig"
+    [config]="productHeaderConfig()"
     [searchFilter]="searchFilter"
     [selectedDropdownValue]="selectedSubcategoryId"
     (searchChange)="onSearchChange($event)"
     (dropdownChange)="onDropdownChange($event)"
-    (addButtonClick)="addProduct()"
-    (contactSellerClick)="configurePix()">
+    (addButtonClick)="addProduct()">
   </app-table-header>
   
   <div *ngIf="data" class="rounded-lg bg-white shadow-sm">
@@ -21,6 +20,7 @@
 <ng-container>
   <app-forms-product
     *ngIf="mostrarFormulario"
+    [productId]="productIdToEdit"
     (goBack)="goToBack()">
   </app-forms-product>
 </ng-container>

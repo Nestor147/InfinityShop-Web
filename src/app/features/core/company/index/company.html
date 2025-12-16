@@ -1,6 +1,6 @@
 <ng-container *ngIf="!mostrarFormulario">
   <app-table-header
-    [config]="companyHeaderConfig"
+    [config]="companyHeaderConfig()"
     [searchFilter]="searchFilter"
     (searchChange)="onSearchChange($event)"
     (addButtonClick)="addCompany()">
@@ -18,6 +18,7 @@
 <ng-container>
   <app-form-company
     *ngIf="mostrarFormulario"
+    [companyId]="companyIdToEdit"
     (goBack)="goToBack()">
   </app-form-company>
 </ng-container>
